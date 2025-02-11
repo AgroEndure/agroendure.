@@ -2,16 +2,11 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 from meteostat import Point, Daily
-from dotenv import load_dotenv
-import os
 import openai
 from pathlib import Path
 
-# Load environment variables from a .env file
-load_dotenv()
-
-# Configure API keys
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Set OpenAI API Key directly
+openai.api_key = "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"
 
 # Load dummydata.csv file into pandas DataFrame
 def load_data_from_csv(file_path="dummydata.csv"):
@@ -108,7 +103,7 @@ def combined_recommendation(n, p, k, target_year, start_month, start_day, end_mo
     npk_recommendation = get_plant_recommendation(n, p, k)
     weather_data = get_weather_data(target_year, start_month, start_day, end_month, end_day)
 
-    weather_info = f"Average Temperature (\u00b0C): {weather_data.get('tavg', 'N/A')}\n"
+    weather_info = f"Average Temperature (°C): {weather_data.get('tavg', 'N/A')}\n"
     weather_info += f"Average Rainfall (mm): {weather_data.get('prcp', 'N/A')}\n"
     weather_info += f"Average Humidity (%): {weather_data.get('rhum', 'N/A')}\n"
 
@@ -120,6 +115,3 @@ def combined_recommendation(n, p, k, target_year, start_month, start_day, end_mo
 if st.button("Get Recommendations"):
     recommendations = combined_recommendation(n_value, p_value, k_value, target_year, start_month, start_day, end_month, end_day)
     st.text_area("Recommendations (Crops & Weather)", recommendations, height=300)
-
-st.write("---")
-st.info("AgroEndure supports plant disease detection, water treatment, and budgeting to improve agricultural efficiency.")
